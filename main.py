@@ -1,16 +1,10 @@
-# This is a sample Python script.
+# Firstly I import the necessary packages
+import pandas as pd
+import numpy as np
+import sklearn as skl
+import seaborn as sns
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+teams = pd.read_csv('teams.csv')
+print(teams)
+# with open('teams.csv', 'r') as teams:
+#     print(teams)
