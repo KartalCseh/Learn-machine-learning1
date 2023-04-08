@@ -10,8 +10,8 @@ teams = pd.read_csv('teams.csv')
 
 print(teams[['athletes', 'medals']].corr())
 
-sns.lmplot(x='athletes', y='medals', data=teams, fit_reg=True, ci=None)     # Plotting the linear regression between nummbers of athletes and medals
-plt.show()  # this line is needed using pycharm, but not in Jupiter notebook
+#sns.lmplot(x='athletes', y='medals', data=teams, fit_reg=True, ci=None)     # Plotting the linear regression between nummbers of athletes and medals
+# plt.show()  # this line is needed using pycharm, but not in Jupiter notebook
 # As we can see yes, there is a correlation, so we can use the athletes to predict the number of medals
 
 '''sns.lmplot(x='athletes', y='medals', data=teams, fit_reg=True, ci=None)     # Plotting the linear regression between nummbers of athletes and medals
@@ -60,3 +60,20 @@ describe_medals = teams.describe()['medals']
 print(describe_medals)
 
 # This was the measurimnr errorsmodel
+
+USA = testset[testset['team'] == 'USA']
+print('USA medals: \n', USA['medals'],'\nUSA predictions:\n', USA['predictions'])
+
+errors = (testset['medals'] - testset['predictions']).abs()
+print(errors)
+error_by_team = errors.groupby(testset['team']).mean()
+print("Error by team", error_by_team)
+
+medals_by_team = testset['medals'].groupby(testset['team']).mean()
+error_ratio = error_by_team / medals_by_team
+error_ratio = error_ratio[~pd.isnull(error_ratio)]
+error_ratio = error_ratio[np.isfinite(error_ratio)]
+print('Error ratio:\n', error_ratio)
+
+error_ratio.plot.hist()
+plt.show()
