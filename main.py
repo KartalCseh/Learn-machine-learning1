@@ -26,4 +26,37 @@ plt.show()  # later I want to use this'''
 #print(teams)
 
 teams = teams.dropna()
-# 2.Building model
+# 2.Building model,firstly we need to split our data to train and test (usually 80:20)
+trainset = teams[teams['year'] < 2012].copy()
+testset = teams[teams['year'] >= 2012].copy()
+
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression()
+
+predictors = ['athletes', 'prev_medals']
+target = 'medals'
+
+# Fit the model on the training data
+reg.fit(trainset[predictors], trainset[target])
+
+# Generate predictions on the test data
+predictions = reg.predict(testset[predictors])
+
+#print(predictions)
+'''This is in the video, but it gave error: 
+reg.fit(trainset[predictors], trainset['medals'])
+LinearRegression()
+predictons = reg.predict(test, predictors)
+print(predictons)'''
+# make prediction round (beaause it has mean, there is no 1.4 medal
+testset['predictions'] = predictions
+testset.loc[testset['predictions'] < 0, 'predictions'] = 0
+testset['predictions'] = testset['predictions'].round()
+
+from sklearn.metrics import  mean_absolute_error
+error = mean_absolute_error(testset['medals'], testset['predictions'])
+print('Error:', error)
+describe_medals = teams.describe()['medals']
+print(describe_medals)
+
+# This was the measurimnr errorsmodel
